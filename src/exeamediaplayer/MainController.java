@@ -1,6 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change license header, choose License Headers in Project Properties.
+ * To change template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package exeamediaplayer;
@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -29,12 +30,19 @@ public class MainController implements Initializable {
     private User user;
     private Global global;
     private ResourceBundle labels;
+    private Player player;
     
     // Primary Stage
     private Stage stage;
     
     @FXML
     private Label welcomeLabel;
+    @FXML
+    private Button playPauseButton;
+    @FXML
+    private Button prevButton;
+    @FXML 
+    private Button nextButton;
     
     /**
      * Initializes the controller class.
@@ -43,32 +51,52 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.global = Global.getInstance();
-        this.labels = this.global.getLabels();
-        this.user = this.global.getUser();
+        global = Global.getInstance();
+        labels = global.getLabels();
+        user = global.getUser();
         
         welcomeLabel.setText(labels.getString("welcome") + ", " + user.getFullName());
+        
+        player = new Player();
     }
     
     @FXML
     public void logout() throws IOException {
-        this.global.setUser(new User());
+        global.setUser(new User());
         
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"), this.global.getLabels());
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"), global.getLabels());
                         
         Scene scene = new Scene(root);
-        this.stage = this.global.getMainStage();
-        this.stage.setScene(scene);
+        stage = global.getMainStage();
+        stage.setScene(scene);
         
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        this.stage.setX((primScreenBounds.getWidth() - this.stage.getWidth()) / 2);
-        this.stage.setY((primScreenBounds.getHeight() - this.stage.getHeight()) / 2);
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
     }
     
     @FXML
     public void close() {
-        this.stage = this.global.getMainStage();
-        this.stage.close();
+        stage = global.getMainStage();
+        stage.close();
     }
 
+    @FXML
+    public void play() {
+        player.play();
+    }
+    
+    @FXML
+    public void pause() {
+        player.pause();
+    }
+    
+    @FXML
+    public void next() {
+        player.next();
+    }
+    
+    public void prev() {
+        player.prev();
+    }
 }

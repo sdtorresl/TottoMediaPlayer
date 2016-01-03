@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.media.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -47,9 +48,11 @@
         <tabs>
           <Tab id="tab-title" text="%online">
                <content>
-                  <HBox alignment="CENTER" styleClass="player-container">
+                  <HBox alignment="CENTER" spacing="10.0" styleClass="player-container">
                      <children>
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button fx:id="prevButton" mnemonicParsing="false" onAction="#prev" text="Prev" />
+                        <Button mnemonicParsing="false" onAction="#play" text="Play" />
+                        <Button mnemonicParsing="false" onAction="#next" text="Next" />
                      </children>
                   </HBox>
                </content>
