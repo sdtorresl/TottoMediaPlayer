@@ -1,7 +1,7 @@
-/*
- * Empty Stylesheet file.
- */
-
+.root {
+    -fx-background-color: linear-gradient(#DBDBDB, #FBFBFB);
+/*    -fx-font-family: "Arial";*/
+}
 .button {
     -fx-text-fill: white;
     -fx-font-weight: bold;

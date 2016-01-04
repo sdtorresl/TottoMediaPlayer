@@ -1,7 +1,7 @@
-/*
- * Empty Stylesheet file.
- */
-
+.root {
+/*    //-fx-background-color: linear-gradient(#DBDBDB, #FBFBFB);
+    //-fx-font-family: "Arial";*/
+}
 .menu-bar, .bar {
     -fx-background-color: #023D49;
 }
