@@ -105,20 +105,20 @@ public class Player {
         prevMediaURL = mediaURL;
         mediaURL = nextMediaURL;
         pause();
-        media = new Media(mediaURL);
+        mediaPlayer = new MediaPlayer(new Media(mediaURL));
         play();
         //TODO
         //nextMediaURL = getNextMediaURL();
     }
     
     public void prev() {
-        //if (prevMediaURL != null) {
+        if (prevMediaURL != null) {
             nextMediaURL = mediaURL;
             mediaURL = prevMediaURL; 
             pause();
-            media = new Media(mediaURL);
+            mediaPlayer = new MediaPlayer(new Media(mediaURL));
             play();
-        //}
+        }
     }
     
 }

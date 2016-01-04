@@ -11,12 +11,10 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -68,11 +66,10 @@ public class MainController implements Initializable {
                         
         Scene scene = new Scene(root);
         stage = global.getMainStage();
+        stage.centerOnScreen();
+        stage.hide();
         stage.setScene(scene);
-        
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+        stage.show();
     }
     
     @FXML
@@ -96,7 +93,20 @@ public class MainController implements Initializable {
         player.next();
     }
     
+    @FXML
     public void prev() {
         player.prev();
+    }
+    
+    @FXML
+    public void edit() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Edit.fxml"), global.getLabels());
+                        
+        Scene scene = new Scene(root);
+        Stage editStage = new Stage();
+        global.setCurrentStage(editStage);
+        editStage.centerOnScreen();
+        editStage.setScene(scene);
+        editStage.show();
     }
 }

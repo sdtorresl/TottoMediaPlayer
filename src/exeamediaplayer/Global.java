@@ -8,6 +8,7 @@ package exeamediaplayer;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
+import java.util.prefs.Preferences;
 
 /**
  *
@@ -16,19 +17,36 @@ import javafx.stage.Stage;
 public class Global {
     private static Global instance = null;
     
+    // Locale settings
     private final Locale spanish = new Locale("ES");
     private final Locale english = Locale.ENGLISH;
-        
+    private Locale currentLanguage;
+    private ResourceBundle labels;    
     private final Locale[] supportedLanguages = {
         spanish,
         english
     };
-
-    private Locale currentLanguage;
-    private ResourceBundle labels;
-    private User user;
     
+    private User user;
     private Stage mainStage;
+    private Stage currentStage;
+    private Preferences preferences;
+
+    public Stage getCurrentStage() {
+        return currentStage;
+    }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
+    }
 
     public Stage getMainStage() {
         return mainStage;
@@ -47,8 +65,13 @@ public class Global {
     }
     
     public Global() {
-        this.currentLanguage = supportedLanguages[0];
-        this.labels = ResourceBundle.getBundle("LabelsBundle", this.currentLanguage);
+        currentLanguage = supportedLanguages[0];
+        labels = ResourceBundle.getBundle("LabelsBundle", currentLanguage);
+        loadPreferences();
+    }
+    
+    private void loadPreferences() {
+        preferences = Preferences.userRoot();
     }
     
     public static Global getInstance() {

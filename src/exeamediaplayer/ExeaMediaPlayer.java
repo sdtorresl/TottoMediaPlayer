@@ -6,6 +6,7 @@
 package exeamediaplayer;
 
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +23,8 @@ public class ExeaMediaPlayer extends Application {
     public void start(Stage stage) throws Exception {
         
         Global global = Global.getInstance();
-        global.setCurrentLanguage("ES");
+        Preferences pref = global.getPreferences();
+        global.setCurrentLanguage(pref.get("LOCALE", "ES"));
         global.setMainStage(stage);
         
         ResourceBundle labels = global.getLabels();
@@ -31,7 +33,6 @@ public class ExeaMediaPlayer extends Application {
         
         Scene scene = new Scene(root);
         stage.setTitle(labels.getString("appTitle"));
-        stage.setResizable(false);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
