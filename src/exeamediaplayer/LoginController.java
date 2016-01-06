@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exeamediaplayer;
 
+import database.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,6 +39,7 @@ public class LoginController implements Initializable {
     private Global global;
     private ResourceBundle labels;
     private User user;
+    private Event event;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,6 +70,10 @@ public class LoginController implements Initializable {
         if (password.getText().equals(this.user.getPassword())) {
             errorLabel.setText(labels.getString("successAuthentication"));
             LOG.log(Level.INFO, "Success authentification");
+            
+            event = sql.getEvent(this.user.getUsername(), 47, "Saturday");
+            System.out.println(event);
+        
             try {
                 this.authenticate();
             } catch (IOException ex) {
@@ -89,12 +90,12 @@ public class LoginController implements Initializable {
     
     private void authenticate() throws IOException {
         // The variable should be initializated before init the controller
-        this.global.setUser(this.user);
+        global.setUser(this.user);
         
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"), global.getLabels());
                         
         Scene scene = new Scene(root);
-        Stage stage = this.global.getMainStage();
+        Stage stage = global.getMainStage();
         stage.hide();
         stage.setScene(scene);
         stage.centerOnScreen();
