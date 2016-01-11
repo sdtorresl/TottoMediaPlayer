@@ -2,6 +2,13 @@
 /*    //-fx-background-color: linear-gradient(#DBDBDB, #FBFBFB);
     //-fx-font-family: "Arial";*/
 }
+.main-container {
+    -fx-background-image: url("http://tottoradio.com/img/logo-bg.png");
+    -fx-background-size: 60px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 550px 50px;
+    
+}
 .menu-bar, .bar {
     -fx-background-color: #023D49;
 }
@@ -20,9 +27,10 @@
     -fx-padding: 5px;
     -fx-margin: 10px;
 }
-.button:hover {
+.button:hover, .toggle-button:hover {
     -fx-text-fill: #023D49;
     -fx-cursor: hand;
+    -fx-opacity: 0.8;
 }
 .button:disabled, .button:pressed {
     -fx-background-color: #CCCCCC;
@@ -57,4 +65,34 @@
     -fx-border-radius: 10px 10px 0px 0px;
     -fx-background-color: #023D49;
     -fx-background-radius: 10px 10px 0px 0px;
+}
+.player-controls {
+    -fx-background-color: white;
+}
+.play {
+    -fx-background-image: url("../img/play.png");
+    -fx-background-color: transparent;
+    -fx-background-size: 65px;
+    -fx-background-repeat: no-repeat;
+    -fx-cursor: hand;
+}
+.play:selected {
+    -fx-background-image: url("../img/pause.png");
+}
+#next {
+    -fx-background-image: url("../img/next.png");
+    -fx-background-color: transparent;
+    -fx-background-size: 40px;
+    -fx-background-repeat: no-repeat;
+}
+#listening {
+    -fx-background-color: #3B3B3B;
+    -fx-text-fill: white;
+}
+#current-song {
+    -fx-background-color: #707070;
+    
+}
+#current-song .label {
+    -fx-text-fill: white;
 }

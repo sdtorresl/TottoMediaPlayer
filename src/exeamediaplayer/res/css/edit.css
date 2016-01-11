@@ -11,6 +11,7 @@
 .button:hover {
     -fx-text-fill: #023D49;
     -fx-cursor: hand;
+    -fx-opacity: 0.9;
 }
 .button:disabled, .button:pressed {
     -fx-background-color: #CCCCCC;

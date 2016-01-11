@@ -63,7 +63,7 @@ public class Event {
         
         Iterator iterator = categories.iterator();
         while(iterator.hasNext()) {
-            sb.append("* ").append(iterator.next().toString());
+            sb.append("* ").append(iterator.next().toString()).append("\n");
         }
         
         return sb.toString();

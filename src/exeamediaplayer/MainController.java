@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 
 /**
@@ -30,6 +31,7 @@ public class MainController implements Initializable {
     private Global global;
     private ResourceBundle labels;
     private Player player;
+    private Boolean playing;
     
     // Primary Stage
     private Stage stage;
@@ -37,12 +39,8 @@ public class MainController implements Initializable {
     @FXML
     private Label welcomeLabel;
     @FXML
-    private Button playPauseButton;
-    @FXML
-    private Button prevButton;
-    @FXML 
-    private Button nextButton;
-    
+    private ToggleButton playPauseButton;
+        
     /**
      * Initializes the controller class.
      * @param url
@@ -57,6 +55,7 @@ public class MainController implements Initializable {
         welcomeLabel.setText(labels.getString("welcome") + ", " + user.getFullName());
         
         player = new Player();
+        playing = false;
     }
     
     @FXML
@@ -82,21 +81,13 @@ public class MainController implements Initializable {
     @FXML
     public void play() {
         player.play();
-    }
-    
-    @FXML
-    public void pause() {
-        player.pause();
+        playing = !playing;
+        playPauseButton.setSelected(playing);
     }
     
     @FXML
     public void next() {
         player.next();
-    }
-    
-    @FXML
-    public void prev() {
-        player.prev();
     }
     
     @FXML
