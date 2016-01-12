@@ -2,6 +2,13 @@
 /*    //-fx-background-color: linear-gradient(#DBDBDB, #FBFBFB);
     //-fx-font-family: "Arial";*/
 }
+.main-container {
+    -fx-background-image: url("http://tottoradio.com/img/logo-bg.png");
+    -fx-background-size: 60px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 550px 50px;
+    
+}
 .menu-bar, .bar {
     -fx-background-color: #023D49;
 }

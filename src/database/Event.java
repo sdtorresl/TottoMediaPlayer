@@ -59,11 +59,11 @@ public class Event {
         StringBuilder sb = new StringBuilder();
         sb.append("Event: ").append(this.name).append("\n");
         sb.append("Start Time: ").append(this.startTime).append("\n");
-        sb.append("End Time: ").append(this.endTime).append("\n");
+        sb.append("End Time: ").append(this.endTime);
         
         Iterator iterator = categories.iterator();
         while(iterator.hasNext()) {
-            sb.append("* ").append(iterator.next().toString()).append("\n");
+            sb.append("\n* ").append(iterator.next().toString());
         }
         
         return sb.toString();

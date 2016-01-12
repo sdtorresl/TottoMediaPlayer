@@ -39,7 +39,6 @@ public class LoginController implements Initializable {
     private Global global;
     private ResourceBundle labels;
     private User user;
-    private Event event;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,9 +69,6 @@ public class LoginController implements Initializable {
         if (password.getText().equals(this.user.getPassword())) {
             errorLabel.setText(labels.getString("successAuthentication"));
             LOG.log(Level.INFO, "Success authentification");
-            
-            event = sql.getEvent(this.user.getUsername(), 47, "Saturday");
-            System.out.println(event);
         
             try {
                 this.authenticate();

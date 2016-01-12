@@ -8,6 +8,7 @@ import database.*;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.stage.Stage;
 import java.util.prefs.Preferences;
 
@@ -17,7 +18,7 @@ import java.util.prefs.Preferences;
  */
 public class Global {
     private static Global instance = null;
-    
+        
     // Locale settings
     private final Locale spanish = new Locale("ES");
     private final Locale english = Locale.ENGLISH;

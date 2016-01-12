@@ -6,7 +6,7 @@ import java.util.Iterator;
  *
  * @author sergio
  */
-class Category {
+public class Category {
     private String name;
     private String description;
     private String folderName;

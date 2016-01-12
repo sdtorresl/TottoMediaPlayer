@@ -5,6 +5,14 @@
  */
 package exeamediaplayer;
 
+import database.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Random;
+import util.CircularArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -15,12 +23,29 @@ import javafx.scene.media.MediaPlayer.Status;
  * @author sergio
  */
 public class Player {
-    private String mediaURL = "file:///home/sergio/Music/springtide_-_06_-_Bright_Sunny_End.mp3";
-    private String prevMediaURL = "file:///home/sergio/Music/palimpsest_trio_-_06_-_enjambements.mp3";
-    private String nextMediaURL = "file:///home/sergio/Music/palimpsest_trio_-_06_-_enjambements.mp3";
+    private static final Logger LOG = Logger.getLogger(LoginController.class.getName());
+    
+    private String mediaURL;
+    private String nextMediaURL;
+    private final String rootFolder;
     private Boolean atEndOfMedia;
     private Status status;
-
+    private CircularArrayList<Category> categories;
+    private int currentCategory;
+    private int totalCategories;
+        
+    private final User user;
+    private final Event event;
+    private final SQLConnector sql;
+    private final Preferences pref;
+    
+    private String currentFolder;
+    private final String OS = System.getProperty("os.name");
+    
+    // Create media player
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    
     public Boolean getAtEndOfMedia() {
         return atEndOfMedia;
     }
@@ -36,11 +61,7 @@ public class Player {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
-    // create media player
-    Media media;
-    MediaPlayer mediaPlayer;
-    
+        
     public Media getMedia() {
         return this.media;
     }
@@ -58,18 +79,28 @@ public class Player {
     }
     
     public Player() {
-       media = new Media(mediaURL);
-       mediaPlayer = new MediaPlayer(media);
-       atEndOfMedia = false;
-    }
-    
-    public Player(String mediaURL) {
-        this.mediaURL = mediaURL;
-        prevMediaURL = null;
-        media = new Media(this.mediaURL);
+        Global global = Global.getInstance();
+        sql = new SQLConnector();
+        user = global.getUser();
+        event = sql.getEvent(user.getUsername(), 47, "Saturday");
+        pref = global.getPreferences();
+        currentFolder = "";
+        
+        rootFolder = pref.get("ROOT_FOLDER", "/Music");
+        LOG.log(Level.INFO, "Player started!");
+        LOG.log(Level.INFO, "Root Folder: {0}", rootFolder);   
+        LOG.log(Level.INFO, "Operative System: {0}", OS);
+        System.out.print(event);
+        
+        // Initialize the current category
+        currentCategory = 0;
+        mediaURL = getNextMediaURL();
+        
+        media = new Media(mediaURL);
         mediaPlayer = new MediaPlayer(media);
+        atEndOfMedia = false;
     }
-    
+        
     @FXML
     public void play() {
         mediaPlayer.play();
@@ -102,23 +133,53 @@ public class Player {
     }
     
     public void next() {
-        prevMediaURL = mediaURL;
-        mediaURL = nextMediaURL;
+        mediaURL = getNextMediaURL();
         pause();
         mediaPlayer = new MediaPlayer(new Media(mediaURL));
         play();
-        //TODO
-        //nextMediaURL = getNextMediaURL();
     }
     
-    public void prev() {
-        if (prevMediaURL != null) {
-            nextMediaURL = mediaURL;
-            mediaURL = prevMediaURL; 
-            pause();
-            mediaPlayer = new MediaPlayer(new Media(mediaURL));
-            play();
+    /**
+     * 
+     * @return 
+     */
+    private String getNextMediaURL() {
+                       
+        categories = event.getCategories();
+        totalCategories = categories.size() - 1;
+        Category category = categories.get(currentCategory);
+        
+        // Counter of the current category
+        if(currentCategory == totalCategories) {
+            currentCategory = 0;
         }
+        else {
+            currentCategory++;
+        }
+        
+        currentFolder = rootFolder + File.separator + category.getFolderName();
+
+        LOG.log(Level.INFO, "Category: {0}", category.getName());
+        LOG.log(Level.INFO, "Folder: {0}", currentFolder);
+        
+        File directory = new File(currentFolder);
+
+        // get all the files from a directory
+        File[] filesList = directory.listFiles();
+        ArrayList<File> musicFiles = new ArrayList<>();
+        
+        for (File file : filesList) {
+            if (file.isFile())
+                musicFiles.add(file);
+        }
+        
+        // Get random file from category folder
+        Random randomGenerator = new Random();
+        int index = randomGenerator.nextInt(musicFiles.size());
+        File currentFile = musicFiles.get(index);
+        nextMediaURL = currentFile.toURI().toString();
+        LOG.log(Level.INFO, "File: {0}", nextMediaURL);
+        
+        return nextMediaURL;
     }
-    
 }
