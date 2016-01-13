@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.concurrent.Task;
+import javafx.util.Duration;
 
 /**
  *
@@ -45,6 +47,7 @@ public class Player {
     // Create media player
     private Media media;
     private MediaPlayer mediaPlayer;
+    private Thread th;
     
     public Boolean getAtEndOfMedia() {
         return atEndOfMedia;
@@ -55,27 +58,11 @@ public class Player {
     }
 
     public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+        return mediaPlayer.getStatus();
     }
         
-    public Media getMedia() {
-        return this.media;
-    }
-
-    public void setMedia(Media media) {
-        this.media = media;
-    }
-
     public MediaPlayer getMediaPlayer() {
         return this.mediaPlayer;
-    }
-
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
-        this.mediaPlayer = mediaPlayer;
     }
     
     public Player() {
@@ -96,13 +83,64 @@ public class Player {
         currentCategory = 0;
         mediaURL = getNextMediaURL();
         
-        media = new Media(mediaURL);
-        mediaPlayer = new MediaPlayer(media);
-        atEndOfMedia = false;
-    }
+        if(mediaURL != null || !"".equals(mediaURL)) {
+            try {
+                media = new Media(mediaURL); 
+                mediaPlayer = new MediaPlayer(media);
+                atEndOfMedia = false;
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, "An error ocurred creating new Media Player", ex);
+            }
+        } else {
+            LOG.log(Level.WARNING, "Can't get the media URL");
+        }
         
+        th = new Thread(task);
+    }
+    
+    private Task<Integer> task = new Task<Integer>() {
+        @Override protected Integer call() throws Exception {
+                       
+            while(true) {
+                status = mediaPlayer.getStatus();
+                
+                if (mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getStopTime())) {
+                    media = new Media(getNextMediaURL());
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.seek(mediaPlayer.getStartTime());
+                    atEndOfMedia = false;
+                    LOG.log(Level.INFO, "The media source is: ", mediaURL);
+                    mediaPlayer.play();
+                }
+                
+                // Now block the thread for a short time, but be sure
+                // to check the interrupted exception for cancellation!
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException interrupted) {
+                    if (isCancelled()) {
+                        LOG.log(Level.INFO, "Player finished");
+                        break;
+                    }
+                }
+            }
+            return 0;
+        }
+    };
+    
     @FXML
     public void play() {
+        if(mediaPlayer == null) {
+            try {
+                media = new Media(mediaURL); 
+                mediaPlayer = new MediaPlayer(media);
+                atEndOfMedia = false;
+            } catch (Exception ex) {
+                LOG.log(Level.SEVERE, "An error ocurred creating new Media Player", ex);
+                return;
+            }
+        } 
+        
         mediaPlayer.play();
         
         status = mediaPlayer.getStatus();
@@ -122,13 +160,19 @@ public class Player {
         } else {
             mediaPlayer.pause();
         }
+        
+        th.start();
     }
     
     public void stop() {
+        task.cancel();
+        th.interrupt();
         mediaPlayer.stop();
     }
     
     public void pause() {
+        task.cancel();
+        th.interrupt();
         mediaPlayer.pause();
     }
     

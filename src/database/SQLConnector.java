@@ -141,10 +141,12 @@ public class SQLConnector {
                   "FROM events AS e, playlists AS p, \n" +
                   "    countries AS c, users AS u, \n" +
                   "    categories AS cat,\n" +
-                  "    events_categories AS ec\n" +
+                  "    events_categories AS ec,\n" +
+                  "    events_playlists AS ep\n" +  
                   "WHERE c.id = " + countryId + "\n" +
                   "AND p.country_id = c.id\n" +
-                  "AND e.playlist_id = p.id\n" +
+                  "AND e.id = ep.event_id\n" +
+                  "AND p.id = ep.playlist_id\n" +
                   "AND ec.event_id = e.id\n" +
                   "AND ec.category_id = cat.id\n" +
                   "AND e.status = 1\n" +
