@@ -34,6 +34,16 @@ public class Global {
     private Stage mainStage;
     private Stage currentStage;
     private Preferences preferences;
+    
+    private Player player;
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public Stage getCurrentStage() {
         return currentStage;

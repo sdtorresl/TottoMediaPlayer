@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -19,10 +20,12 @@ import javafx.stage.Stage;
  */
 public class ExeaMediaPlayer extends Application {
     
+    private Global global;
+    
     @Override
     public void start(Stage stage) throws Exception {
         
-        Global global = Global.getInstance();
+        global = Global.getInstance();
         Preferences pref = global.getPreferences();
         global.setCurrentLanguage(pref.get("LOCALE", "ES"));
         global.setMainStage(stage);
@@ -33,6 +36,7 @@ public class ExeaMediaPlayer extends Application {
         
         Scene scene = new Scene(root);
         stage.setTitle(labels.getString("appTitle"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("res/img/icon3.png")));
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -43,6 +47,13 @@ public class ExeaMediaPlayer extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    @Override
+    public void stop() {
+        
+        Player player = global.getPlayer();
+        player.stop();
     }
     
 }

@@ -18,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -68,7 +70,8 @@ public class MainController implements Initializable {
         
         //OnlinePlayer op = new OnlinePlayer("http://listen.radionomy.com/abc-jazz");
         player = new Player();
-        playing = false;
+        global.setPlayer(player);
+        
         System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
         listeningLabel.setText(global.getCurrentEvent().getName());
     }
@@ -96,13 +99,15 @@ public class MainController implements Initializable {
     @FXML
     public void play() {
         player.play();
-        playing = !playing;
+        playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);
     }
     
     @FXML
     public void next() {
         player.next();
+        playing = !(player.getStatus() == Status.PLAYING);
+        playPauseButton.setSelected(playing);
     }
     
     @FXML

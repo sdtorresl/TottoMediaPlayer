@@ -7,6 +7,7 @@ package exeamediaplayer;
 
 import database.*;
 import java.io.File;
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Random;
 import util.CircularArrayList;
@@ -18,6 +19,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.concurrent.Task;
+//import static javafx.concurrent.Task.State;
 
 /**
  *
@@ -79,6 +81,22 @@ public class Player {
             return 0;
         }
     };
+
+    public Thread getThread() {
+        return th;
+    }
+
+    public void setThread(Thread th) {
+        this.th = th;
+    }
+
+    public Task<Integer> getTask() {
+        return task;
+    }
+
+    public void setTask(Task<Integer> task) {
+        this.task = task;
+    }
     
     public Boolean getAtEndOfMedia() {
         return atEndOfMedia;
@@ -164,7 +182,10 @@ public class Player {
             mediaPlayer.pause();
         }
         
-        th.start();
+        if(th.getState() == State.NEW) {
+            System.out.println("Thread started!");
+            th.start();
+        }
     }
     
     public void stop() {
