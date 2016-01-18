@@ -1,13 +1,13 @@
 .root {
 /*    //-fx-background-color: linear-gradient(#DBDBDB, #FBFBFB);
     //-fx-font-family: "Arial";*/
+    -fx-background-image: url("../img/bg.jpg");
 }
 .main-container {
-    -fx-background-image: url("http://tottoradio.com/img/logo-bg.png");
-    -fx-background-size: 60px;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: 550px 50px;
-    
+    -fx-background-image: url("../img/bg.jpg"), url("../img/totto.png");
+    -fx-background-size: 200px, 50px;
+    -fx-background-repeat: repeat, no-repeat;
+    -fx-background-position: 0px 20px, 550px 50px;
 }
 .menu-bar, .bar {
     -fx-background-color: #023D49;
@@ -76,14 +76,23 @@
     -fx-background-repeat: no-repeat;
     -fx-cursor: hand;
 }
+.play:hover {
+    -fx-background-image: url("../img/play-hover.png");
+}
 .play:selected {
     -fx-background-image: url("../img/pause.png");
+}
+.play:selected:hover {
+    -fx-background-image: url("../img/pause-hover.png");
 }
 #next {
     -fx-background-image: url("../img/next.png");
     -fx-background-color: transparent;
     -fx-background-size: 40px;
     -fx-background-repeat: no-repeat;
+}
+#next:hover {
+    -fx-background-image: url("../img/next-hover.png");
 }
 #listening {
     -fx-background-color: #3B3B3B;

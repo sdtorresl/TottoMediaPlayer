@@ -18,7 +18,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.concurrent.Task;
-import javafx.util.Duration;
 
 /**
  *
@@ -49,6 +48,38 @@ public class Player {
     private MediaPlayer mediaPlayer;
     private Thread th;
     
+    // Task to play automatically the next media source
+    private Task<Integer> task = new Task<Integer>() {
+        @Override 
+        protected Integer call() throws Exception {
+                      
+            while(true) {
+                status = mediaPlayer.getStatus();
+                
+                // When media is finished
+                if (mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getStopTime())) {
+                    media = new Media(getNextMediaURL());
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.seek(mediaPlayer.getStartTime());
+                    atEndOfMedia = false;
+                    LOG.log(Level.INFO, "The media source is: ", mediaURL);
+                    mediaPlayer.play();
+                }
+                
+                // Block the thread for a short time
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException interrupted) {
+                    if (isCancelled()) {
+                        LOG.log(Level.INFO, "Player finished");
+                        break;
+                    }
+                }
+            }
+            return 0;
+        }
+    };
+    
     public Boolean getAtEndOfMedia() {
         return atEndOfMedia;
     }
@@ -69,7 +100,9 @@ public class Player {
         Global global = Global.getInstance();
         sql = new SQLConnector();
         user = global.getUser();
+        // TODO get the country id
         event = sql.getEvent(user.getUsername(), 47, "Saturday");
+        global.setCurrentEvent(event);
         pref = global.getPreferences();
         currentFolder = "";
         
@@ -97,36 +130,6 @@ public class Player {
         
         th = new Thread(task);
     }
-    
-    private Task<Integer> task = new Task<Integer>() {
-        @Override protected Integer call() throws Exception {
-                       
-            while(true) {
-                status = mediaPlayer.getStatus();
-                
-                if (mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getStopTime())) {
-                    media = new Media(getNextMediaURL());
-                    mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.seek(mediaPlayer.getStartTime());
-                    atEndOfMedia = false;
-                    LOG.log(Level.INFO, "The media source is: ", mediaURL);
-                    mediaPlayer.play();
-                }
-                
-                // Now block the thread for a short time, but be sure
-                // to check the interrupted exception for cancellation!
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interrupted) {
-                    if (isCancelled()) {
-                        LOG.log(Level.INFO, "Player finished");
-                        break;
-                    }
-                }
-            }
-            return 0;
-        }
-    };
     
     @FXML
     public void play() {
@@ -184,8 +187,10 @@ public class Player {
     }
     
     /**
+     * Implements the logic to get the next media source
+     * based in a defined criteria
      * 
-     * @return 
+     * @return URL
      */
     private String getNextMediaURL() {
                        
@@ -208,7 +213,7 @@ public class Player {
         
         File directory = new File(currentFolder);
 
-        // get all the files from a directory
+        // Get all the files from a directory
         File[] filesList = directory.listFiles();
         ArrayList<File> musicFiles = new ArrayList<>();
         

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.media.*?>
 <?import javafx.scene.image.*?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="main-container" stylesheets="@res/css/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="exeamediaplayer.MainController">
+<VBox minHeight="300.0" minWidth="655.0" styleClass="main-container" stylesheets="@res/css/main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="exeamediaplayer.MainController">
    <children>
       <HBox alignment="CENTER" styleClass="bar">
          <children>
@@ -72,7 +73,7 @@
                                                 <Insets left="5.0" top="5.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <Label maxHeight="170.0" maxWidth="175.0" prefHeight="30.0" text="Ejemplo de texto muy muy largo">
+                                          <Label fx:id="listeningLabel" maxHeight="170.0" maxWidth="175.0" prefHeight="30.0">
                                              <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
@@ -109,13 +110,24 @@
           </Tab>
           <Tab closable="false" text="%online">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="150.0">
+                     <children>
+                        <WebView fx:id="onlinePlayer" prefHeight="150.0" prefWidth="615.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
          <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin>
       </TabPane>
+      <HBox alignment="CENTER">
+         <children>
+            <Label text="%rights" textAlignment="CENTER" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
    </children>
 </VBox>

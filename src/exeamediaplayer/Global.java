@@ -30,6 +30,7 @@ public class Global {
     };
     
     private User user;
+    private Event currentEvent;
     private Stage mainStage;
     private Stage currentStage;
     private Preferences preferences;
@@ -64,6 +65,14 @@ public class Global {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public Event getCurrentEvent() {
+        return currentEvent;
+    }
+
+    public void setCurrentEvent(Event currentEvent) {
+        this.currentEvent = currentEvent;
     }
     
     public Global() {

@@ -9,7 +9,8 @@ import database.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +43,10 @@ public class MainController implements Initializable {
     private Label welcomeLabel;
     @FXML
     private ToggleButton playPauseButton;
+    @FXML
+    private WebView onlinePlayer;
+    @FXML
+    private Label listeningLabel;
         
     /**
      * Initializes the controller class.
@@ -54,8 +61,16 @@ public class MainController implements Initializable {
         
         welcomeLabel.setText(labels.getString("welcome") + ", " + user.getFullName());
         
+        WebEngine webEngine = onlinePlayer.getEngine();
+        webEngine.setJavaScriptEnabled(true);
+        webEngine.reload();
+        webEngine.load("http://tottoturadio.com");
+        
+        //OnlinePlayer op = new OnlinePlayer("http://listen.radionomy.com/abc-jazz");
         player = new Player();
         playing = false;
+        System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
+        listeningLabel.setText(global.getCurrentEvent().getName());
     }
     
     @FXML
