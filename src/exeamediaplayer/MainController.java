@@ -46,9 +46,11 @@ public class MainController implements Initializable {
     @FXML
     private ToggleButton playPauseButton;
     @FXML
-    private WebView onlinePlayer;
-    @FXML
     private Label listeningLabel;
+    @FXML
+    private Label listeningOnLabel;
+    @FXML
+    private ToggleButton playPauseOnButton;
         
     /**
      * Initializes the controller class.
@@ -62,18 +64,14 @@ public class MainController implements Initializable {
         user = global.getUser();
         
         welcomeLabel.setText(labels.getString("welcome") + ", " + user.getFullName());
-        
-        WebEngine webEngine = onlinePlayer.getEngine();
-        webEngine.setJavaScriptEnabled(true);
-        webEngine.reload();
-        webEngine.load("http://tottoturadio.com");
-        
+                
         //OnlinePlayer op = new OnlinePlayer("http://listen.radionomy.com/abc-jazz");
         player = new Player();
         global.setPlayer(player);
         
         System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
         listeningLabel.setText(global.getCurrentEvent().getName());
+        listeningOnLabel.setText(global.getLabels().getString("listenOnline"));
     }
     
     @FXML
@@ -98,6 +96,13 @@ public class MainController implements Initializable {
 
     @FXML
     public void play() {
+        player.play();
+        playing = !(player.getStatus() == Status.PLAYING);
+        playPauseButton.setSelected(playing);
+    }
+    
+    @FXML
+    public void playOnline() {
         player.play();
         playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);

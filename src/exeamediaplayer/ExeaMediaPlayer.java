@@ -35,6 +35,7 @@ public class ExeaMediaPlayer extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"), labels);
         
         Scene scene = new Scene(root);
+        
         stage.setTitle(labels.getString("appTitle"));
         stage.getIcons().add(new Image(getClass().getResourceAsStream("res/img/icon3.png")));
         stage.setScene(scene);
