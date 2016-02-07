@@ -69,9 +69,9 @@ public class MainController implements Initializable {
         player = new Player();
         global.setPlayer(player);
         
-        System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
+        //System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
         listeningLabel.setText(global.getCurrentEvent().getName());
-        listeningOnLabel.setText(global.getLabels().getString("listenOnline"));
+        //listeningOnLabel.setText(global.getLabels().getString("listenOnline"));
     }
     
     @FXML

@@ -15,13 +15,13 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private String country;
+    private int country;
     private String group;
     private String device;
 
     public User() {};
     
-    public User(int id, String username, String password, String firstName, String lastName, String country, String group, String device) {
+    public User(int id, String username, String password, String firstName, String lastName, int country, String group, String device) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -72,11 +72,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getCountry() {
+    public int getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(int country) {
         this.country = country;
     }
 

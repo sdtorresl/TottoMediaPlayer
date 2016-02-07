@@ -26,7 +26,7 @@
                   <Label text="%folder" />
                   <TextField fx:id="selectedFolder" GridPane.columnIndex="1" />
                   <Button fx:id="selectButton" mnemonicParsing="false" onAction="#selectFolder" text="%select" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                  <Label text="%folder" GridPane.rowIndex="1" />
+                  <Label text="%language" GridPane.rowIndex="1" />
                   <ChoiceBox fx:id="lanChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                </children>
                <VBox.margin>

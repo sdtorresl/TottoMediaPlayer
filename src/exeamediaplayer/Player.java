@@ -118,13 +118,15 @@ public class Player {
         Global global = Global.getInstance();
         sql = new SQLConnector();
         user = global.getUser();
-        // TODO get the country id
-        event = sql.getEvent(user.getUsername(), 47, "Saturday");
+        
+        event = sql.getEvent(user.getUsername(), user.getCountry());
         global.setCurrentEvent(event);
         pref = global.getPreferences();
         currentFolder = "";
         
-        rootFolder = pref.get("ROOT_FOLDER", "/Music");
+        rootFolder = pref.get("ROOT_FOLDER", System.getProperty("user.dir"));
+        System.out.println(rootFolder);
+        
         LOG.log(Level.INFO, "Player started!");
         LOG.log(Level.INFO, "Root Folder: {0}", rootFolder);   
         LOG.log(Level.INFO, "Operative System: {0}", OS);
@@ -216,8 +218,16 @@ public class Player {
     private String getNextMediaURL() {
                        
         categories = event.getCategories();
-        totalCategories = categories.size() - 1;
-        Category category = categories.get(currentCategory);
+        Category category;
+        
+        try {
+            totalCategories = categories.size() - 1;
+            category = categories.get(currentCategory);
+        }
+        catch (IndexOutOfBoundsException ex) {
+            LOG.log(Level.WARNING, "No categories related to this event");
+            return null;
+        }
         
         // Counter of the current category
         if(currentCategory == totalCategories) {
@@ -227,28 +237,32 @@ public class Player {
             currentCategory++;
         }
         
-        currentFolder = rootFolder + File.separator + category.getFolderName();
+        try {
+            currentFolder = rootFolder + File.separator + category.getFolderName();
 
-        LOG.log(Level.INFO, "Category: {0}", category.getName());
-        LOG.log(Level.INFO, "Folder: {0}", currentFolder);
-        
-        File directory = new File(currentFolder);
+            LOG.log(Level.INFO, "Category: {0}", category.getName());
+            LOG.log(Level.INFO, "Folder: {0}", currentFolder);
 
-        // Get all the files from a directory
-        File[] filesList = directory.listFiles();
-        ArrayList<File> musicFiles = new ArrayList<>();
-        
-        for (File file : filesList) {
-            if (file.isFile())
-                musicFiles.add(file);
-        }
-        
-        // Get random file from category folder
-        Random randomGenerator = new Random();
-        int index = randomGenerator.nextInt(musicFiles.size());
-        File currentFile = musicFiles.get(index);
-        nextMediaURL = currentFile.toURI().toString();
-        LOG.log(Level.INFO, "File: {0}", nextMediaURL);
+            File directory = new File(currentFolder);
+
+            // Get all the files from a directory
+            File[] filesList = directory.listFiles();
+            ArrayList<File> musicFiles = new ArrayList<>();
+
+            for (File file : filesList) {
+                if (file.isFile())
+                    musicFiles.add(file);
+            }
+
+            // Get random file from category folder
+            Random randomGenerator = new Random();
+            int index = randomGenerator.nextInt(musicFiles.size());
+            File currentFile = musicFiles.get(index);
+            nextMediaURL = currentFile.toURI().toString();
+            LOG.log(Level.INFO, "File: {0}", nextMediaURL);
+        } catch (Exception ex) {
+            LOG.log(Level.INFO, "Can't get file from category");
+        }   
         
         return nextMediaURL;
     }

@@ -1,6 +1,7 @@
 package exeamediaplayer;
 
 import database.*;
+import util.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,11 +53,11 @@ public class LoginController implements Initializable {
         errorLabel.setText(labels.getString("connecting"));
         loginButton.setDisable(true);
         
-        if(username.getText().equals("")) {
+        if(username.getText().isEmpty()) {
             errorLabel.setText(labels.getString("userEmpty"));
             loginButton.setDisable(false);
             return;
-        } else if (password.getText().equals("")) {
+        } else if (password.getText().isEmpty()) {
             errorLabel.setText(labels.getString("passwordEmpty"));
             loginButton.setDisable(false);
             return;
@@ -65,20 +66,24 @@ public class LoginController implements Initializable {
         sql = new SQLConnector();
         
         this.user = sql.getUser(username.getText());
-        
-        if (password.getText().equals(this.user.getPassword())) {
-            errorLabel.setText(labels.getString("successAuthentication"));
-            LOG.log(Level.INFO, "Success authentification");
-        
-            try {
-                this.authenticate();
-            } catch (IOException ex) {
-                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+    
+        if (this.user != null) {
+            if (Password.checkPassword(password.getText(), this.user.getPassword())) {
+                errorLabel.setText(labels.getString("successAuthentication"));
+                LOG.log(Level.INFO, "Success authentification");
+
+                try {
+                    this.authenticate();
+                } catch (IOException ex) {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                errorLabel.setText(labels.getString("failedAuthentication"));
+                LOG.log(Level.INFO, "Failed authentication");
             }
         } else {
-            errorLabel.setText(labels.getString("failedAuthentication"));
+            errorLabel.setText(labels.getString("userDoesNotExist"));
             LOG.log(Level.INFO, "Failed authentication");
-
         }
         
         loginButton.setDisable(false);

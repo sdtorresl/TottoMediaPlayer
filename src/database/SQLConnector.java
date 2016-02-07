@@ -79,33 +79,37 @@ public class SQLConnector {
             stmt = conn.createStatement();
             
             String sql;
-            sql = "SELECT u.id, u.username, u.password, u.first_name, u.last_name, c.country, u.device_id " +
+            sql = "SELECT u.id, u.username, u.password, u.first_name, u.last_name, u.country_id, c.name AS country, u.device_id " +
                   "FROM users AS u " +
                   "JOIN countries AS c ON u.country_id = c.id " +
                   "WHERE u.username LIKE \"" + username +"\"";
             Logger.getLogger(SQLConnector.class.getName()).log(Level.INFO, "Executing query: \"{0}\" ...", sql);
             rs = stmt.executeQuery(sql);
             
+            if (!rs.next()){
+                //ResultSet is empty
+                Logger.getLogger(SQLConnector.class.getName()).log(Level.WARNING, "The user {0} doesn't exist.", username);
+                return null;
+            }
+
             User user = new User();
+            
             // Extract data from result set
-            while(rs.next()){
+            if(rs.first()){
                 //Retrieve by column name
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
-                user.setCountry(rs.getString("country"));
+                user.setCountry(rs.getInt("country_id"));
                 user.setDevice(rs.getString("device_id"));
             }
             
             this.closeConnection();
             
-            if(user.getPassword().equals("")) {
-                return null;
-            } else {
-                return user;
-            }
+            return user;
+            
         } catch (SQLException ex) {
             Logger.getLogger(SQLConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,7 +134,7 @@ public class SQLConnector {
             String sql;
             sql = "SELECT e.name as 'Event', \n" +
                   "    p.name AS 'Playlist', \n" +
-                  "    c.country AS 'Country', \n" +
+                  "    c.name AS 'Country', \n" +
                   "    u.username AS 'Username',\n" +
                   "    cat.name AS 'Category',\n" +
                   "    cat.description AS 'Category description',\n" +
