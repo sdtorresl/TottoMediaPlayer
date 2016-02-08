@@ -107,7 +107,12 @@ public class Player {
     }
 
     public Status getStatus() {
-        return mediaPlayer.getStatus();
+        try {
+            return mediaPlayer.getStatus();
+        }
+        catch (NullPointerException ex) {
+            return Status.STOPPED;
+        }
     }
         
     public MediaPlayer getMediaPlayer() {
@@ -142,7 +147,7 @@ public class Player {
                 mediaPlayer = new MediaPlayer(media);
                 atEndOfMedia = false;
             } catch (Exception ex) {
-                LOG.log(Level.SEVERE, "An error ocurred creating new Media Player", ex);
+                LOG.log(Level.SEVERE, "An error ocurred creating new Media Player");
             }
         } else {
             LOG.log(Level.WARNING, "Can't get the media URL");
@@ -197,8 +202,6 @@ public class Player {
     }
     
     public void pause() {
-        task.cancel();
-        th.interrupt();
         mediaPlayer.pause();
     }
     

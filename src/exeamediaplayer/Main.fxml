@@ -108,7 +108,7 @@
                   </HBox>
                </content>
           </Tab>
-          <Tab closable="false" text="%online">
+          <Tab disable="true" text="%online">
             <content>
               <HBox alignment="CENTER" spacing="20.0" styleClass="player-container">
                      <children>

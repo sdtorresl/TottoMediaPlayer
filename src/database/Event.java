@@ -61,10 +61,11 @@ public class Event {
         sb.append("Start Time: ").append(this.startTime).append("\n");
         sb.append("End Time: ").append(this.endTime);
         
-        Iterator iterator = categories.iterator();
+        Iterator<Category> iterator = categories.iterator();
         while(iterator.hasNext()) {
             sb.append("\n* ").append(iterator.next().toString());
         }
+        sb.append("\n* ");
         
         return sb.toString();
     }

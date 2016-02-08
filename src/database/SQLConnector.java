@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.CircularArrayList;
+import java.time.LocalTime;
 // import com.mysql.jdbc.*;
 
 /**
@@ -156,6 +157,7 @@ public class SQLConnector {
                   "AND e.status = 1\n" +
                   "AND e.day_of_week LIKE '" + dayOfWeek + "'\n" +
                   "AND u.username LIKE '" + username + "'\n" +
+                  "AND \"" + LocalTime.now() + "\" BETWEEN e.start_time AND e.end_time \n" +
                   "ORDER by e.name, ec.order_number";
             Logger.getLogger(SQLConnector.class.getName()).log(Level.INFO, "Executing query: \"{0}\" ...", sql);
             rs = stmt.executeQuery(sql);

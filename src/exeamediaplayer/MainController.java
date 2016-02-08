@@ -9,8 +9,6 @@ import database.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,10 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 /**
@@ -65,17 +60,13 @@ public class MainController implements Initializable {
         
         welcomeLabel.setText(labels.getString("welcome") + ", " + user.getFullName());
                 
-        //OnlinePlayer op = new OnlinePlayer("http://listen.radionomy.com/abc-jazz");
         player = new Player();
         global.setPlayer(player);
-        
-        //System.out.println(player.getMediaPlayer().getMedia().getMetadata().toString());
-        listeningLabel.setText(global.getCurrentEvent().getName());
-        //listeningOnLabel.setText(global.getLabels().getString("listenOnline"));
     }
     
     @FXML
     public void logout() throws IOException {
+        player.stop();
         global.setUser(new User());
         
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"), global.getLabels());
@@ -90,6 +81,7 @@ public class MainController implements Initializable {
     
     @FXML
     public void close() {
+        player.stop();
         stage = global.getMainStage();
         stage.close();
     }
@@ -99,6 +91,10 @@ public class MainController implements Initializable {
         player.play();
         playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);
+        if (player.getStatus() == Status.PLAYING)
+            listeningLabel.setText(global.getCurrentEvent().getName());
+        else
+            listeningLabel.setText(labels.getString("eventError"));
     }
     
     @FXML
@@ -113,6 +109,10 @@ public class MainController implements Initializable {
         player.next();
         playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);
+        if (player.getStatus() == Status.PLAYING)
+            listeningLabel.setText(global.getCurrentEvent().getName());
+        else
+            listeningLabel.setText(labels.getString("eventError"));
     }
     
     @FXML
