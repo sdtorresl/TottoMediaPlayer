@@ -74,7 +74,7 @@ public class EditController implements Initializable {
         Stage directoryStage = new Stage();
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("JavaFX Projects");
-        File defaultDirectory = new File("/home");
+        File defaultDirectory = new File(System.getProperty("user.home"));
         chooser.setInitialDirectory(defaultDirectory);
         File selectedDirectory = chooser.showDialog(directoryStage);
         folder = selectedDirectory.getPath();
