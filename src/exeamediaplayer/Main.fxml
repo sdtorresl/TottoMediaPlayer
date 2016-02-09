@@ -58,7 +58,7 @@
                               <Button id="next" mnemonicParsing="false" onAction="#next" prefHeight="40.0" prefWidth="40.0" />
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label id="listening" prefHeight="30.0" prefWidth="200.0" text="%listening">
+                                    <Label id="listening" fx:id="nowListeningLabel" prefHeight="30.0" prefWidth="200.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
@@ -118,7 +118,7 @@
                               
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label id="listening" prefHeight="30.0" prefWidth="200.0" text="%listening">
+                                    <Label id="listening" prefHeight="30.0" prefWidth="200.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>

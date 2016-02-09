@@ -43,9 +43,7 @@ public class MainController implements Initializable {
     @FXML
     private Label listeningLabel;
     @FXML
-    private Label listeningOnLabel;
-    @FXML
-    private ToggleButton playPauseOnButton;
+    private Label nowListeningLabel;
         
     /**
      * Initializes the controller class.
@@ -91,10 +89,7 @@ public class MainController implements Initializable {
         player.play();
         playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);
-        if (player.getStatus() == Status.PLAYING)
-            listeningLabel.setText(global.getCurrentEvent().getName());
-        else
-            listeningLabel.setText(labels.getString("eventError"));
+        setMetadata();
     }
     
     @FXML
@@ -109,10 +104,7 @@ public class MainController implements Initializable {
         player.next();
         playing = !(player.getStatus() == Status.PLAYING);
         playPauseButton.setSelected(playing);
-        if (player.getStatus() == Status.PLAYING)
-            listeningLabel.setText(global.getCurrentEvent().getName());
-        else
-            listeningLabel.setText(labels.getString("eventError"));
+        setMetadata();
     }
     
     @FXML
@@ -125,5 +117,16 @@ public class MainController implements Initializable {
         editStage.centerOnScreen();
         editStage.setScene(scene);
         editStage.show();
+    }
+    
+    private void setMetadata() {
+        if (playing) {
+            listeningLabel.setText(global.getCurrentEvent().getName());
+            nowListeningLabel.setText(labels.getString("listening"));
+        }
+        else {
+            nowListeningLabel.setText(labels.getString("paused"));
+            listeningLabel.setText("");
+        }
     }
 }

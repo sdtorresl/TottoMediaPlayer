@@ -107,12 +107,7 @@ public class Player {
     }
 
     public Status getStatus() {
-        try {
-            return mediaPlayer.getStatus();
-        }
-        catch (NullPointerException ex) {
-            return Status.STOPPED;
-        }
+        return mediaPlayer.getStatus();
     }
         
     public MediaPlayer getMediaPlayer() {
@@ -150,6 +145,8 @@ public class Player {
                 LOG.log(Level.SEVERE, "An error ocurred creating new Media Player");
             }
         } else {
+            media = new Media("");
+            mediaPlayer = new MediaPlayer(media);
             LOG.log(Level.WARNING, "Can't get the media URL");
         }
         
