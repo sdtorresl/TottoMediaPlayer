@@ -28,11 +28,6 @@
                     <MenuItem mnemonicParsing="false" onAction="#edit" text="%options" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="%help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
               </menus>
             </MenuBar>
             <HBox alignment="CENTER_RIGHT" prefWidth="300.0">

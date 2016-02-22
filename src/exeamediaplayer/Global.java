@@ -8,7 +8,6 @@ import database.*;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import javafx.stage.Stage;
 import java.util.prefs.Preferences;
 

@@ -155,7 +155,7 @@ public class SQLConnector {
                   "AND ec.event_id = e.id\n" +
                   "AND ec.category_id = cat.id\n" +
                   "AND e.status = 1\n" +
-                  "AND e.day_of_week LIKE '" + dayOfWeek + "'\n" +
+                  "AND e.day_of_week LIKE '%" + dayOfWeek + "%'\n" +
                   "AND u.username LIKE '" + username + "'\n" +
                   "AND \"" + LocalTime.now() + "\" BETWEEN e.start_time AND e.end_time \n" +
                   "ORDER by e.name, ec.order_number";
