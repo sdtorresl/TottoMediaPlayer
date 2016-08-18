@@ -37,9 +37,9 @@ public class Player {
     private int currentCategory;
     private int totalCategories;
         
-    private final User user;
-    private final Event event;
-    private final SQLConnector sql;
+    private User user;
+    private Event event;
+    private SQLConnector sql;
     private final Preferences pref;
     
     private String currentFolder;
@@ -216,7 +216,11 @@ public class Player {
      * @return URL
      */
     private String getNextMediaURL() {
-                       
+        Global global = Global.getInstance();
+        sql = new SQLConnector();
+        event = sql.getEvent(user.getUsername(), user.getCountry());
+        global.setCurrentEvent(event);
+        
         categories = event.getCategories();
         Category category;
         
